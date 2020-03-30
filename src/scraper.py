@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from src.utils import save_quotes
+from src.utils import save_pickle
 from src.utils import quotes_file
 
 
@@ -56,7 +56,7 @@ def build_quote_dict(episode_dict):
 def scrape():
     episode_dict = build_episode_dict()
     quote_dict = build_quote_dict(episode_dict)
-    save_quotes(quote_dict, quotes_file)
+    save_pickle(quote_dict, quotes_file)
     return quote_dict
 
 if __name__ == '__main__':
