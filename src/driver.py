@@ -31,10 +31,13 @@ def main():
     encoder = Encoder(sentence_encoder)
     predictor = Predictor(encoder, quotes)
 
-    input_sentence = query_input()
-
-    output_sentence = predictor.predict_output(input_sentence)
-    print(output_sentence)
+    while True:
+        input_sentence = query_input()
+        prediction = predictor.predict_output(input_sentence)
+        output_quote = prediction[0]
+        output_season = prediction[1]['season']
+        output_episode = prediction[1]['episode']
+        print("Michael says: \"{0}\" in season {1}, episode {2}".format(output_quote, output_season, output_episode))
 
 
 if __name__ == '__main__':

@@ -7,4 +7,4 @@ class Encoder:
         self.encoder = encoder
 
     def compute_embedding(self, phrase):
-        return self.encoder(phrase)
+        return self.encoder(phrase).numpy()
