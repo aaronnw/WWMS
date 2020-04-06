@@ -1,8 +1,9 @@
-from src.utils import load_quotes, load_encoder
+from src.utils import load_quotes, load_quote_embeddings, save_pickle, embeddings_file
 from src.predictor import Predictor
 from src.encoder import Encoder
 from src.scraper import scrape
 
+import numpy as np
 
 
 def query_input():
@@ -18,18 +19,35 @@ def filter_quotes(quotes, season=None, episode=None):
         filtered_quotes[quote] = details
     return filtered_quotes
 
+def generate_quote_embeddings(encoder, quotes):
+    # Add an embedding field to each item in quote dict
+    raw_quotes = np.asarray(list(quotes.keys()))
+    embeddings = encoder.compute_embedding(raw_quotes)
+    for index, key in enumerate(quotes.keys()):
+        quotes[key]['embedding'] = embeddings[index]
+    return quotes
 
 def main():
     # Load a dictionary of Michael's quotes to their season and episode
+    print("Attempting to load quotes from file")
     quotes = load_quotes()
     if quotes is None:
+        print("Scraping the web for new quotes")
         quotes = scrape()
 
-    quotes = filter_quotes(quotes, 1, 1)
-    sentence_encoder = load_encoder()
+    print("Creating sentence encoder")
+    encoder = Encoder()
 
-    encoder = Encoder(sentence_encoder)
-    predictor = Predictor(encoder, quotes)
+    print("Attempting to load quote embeddings from file")
+    quote_embeddings = load_quote_embeddings()
+    if quote_embeddings is None:
+        print("Generating new quote embeddings")
+        quote_embeddings = generate_quote_embeddings(encoder, quotes)
+        print("Saving new quote embeddings to {0}".format(embeddings_file))
+        save_pickle(quote_embeddings, embeddings_file)
+
+    print("Creating predictor")
+    predictor = Predictor(encoder, quote_embeddings)
 
     while True:
         input_sentence = query_input()

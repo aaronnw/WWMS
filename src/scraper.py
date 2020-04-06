@@ -56,6 +56,7 @@ def build_quote_dict(episode_dict):
 def scrape():
     episode_dict = build_episode_dict()
     quote_dict = build_quote_dict(episode_dict)
+    print("Saving new quotes")
     save_pickle(quote_dict, quotes_file)
     return quote_dict
 

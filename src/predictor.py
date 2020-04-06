@@ -1,19 +1,10 @@
-import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 
 class Predictor:
-    def __init__(self, encoder, quotes):
+    def __init__(self, encoder, quote_embeddings):
         self.encoder = encoder
-        self.quotes = self.generate_quote_embeddings(quotes)
-
-    def generate_quote_embeddings(self, quotes):
-        # Add an embedding field to each item in quote dict
-        raw_quotes = np.asarray(list(quotes.keys()))
-        embeddings = self.encoder.compute_embedding(raw_quotes)
-        for index, key in enumerate(quotes.keys()):
-            quotes[key]['embedding'] = embeddings[index]
-        return quotes
+        self.quotes = quote_embeddings
 
     def find_best_embedding(self, input_embedding):
         best_quote = None
