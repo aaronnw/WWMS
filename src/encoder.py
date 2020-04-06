@@ -1,4 +1,3 @@
-import numpy as np
 
 class Encoder:
     """
@@ -7,10 +6,5 @@ class Encoder:
     def __init__(self, encoder):
         self.encoder = encoder
 
-    def compute_quote_embeddings(self, quotes):
-        message_embeddings = self.encoder(np.fromiter(quotes.keys(), dtype=str))
-        return message_embeddings
-
-    def compute_input_embedding(self, input_words):
-        message_embeddings = self.encoder(input_words)
-        return message_embeddings
+    def compute_embedding(self, phrase):
+        return self.encoder(phrase)

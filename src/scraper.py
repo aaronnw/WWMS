@@ -49,7 +49,7 @@ def build_quote_dict(episode_dict):
                 annotations = quote_section.find_all_next('b', text="Michael:")
                 for annotation in annotations:
                     quote = process_quote(annotation.next_sibling)
-                    quote_dict[quote] = (season, episode)
+                    quote_dict[quote] = {"season": int(season), "episode": int(episode)}
     return quote_dict
 
 
